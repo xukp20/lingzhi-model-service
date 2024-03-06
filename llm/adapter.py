@@ -62,6 +62,14 @@ def to_prompt(theme):
     response = chatglm_once(SYSTEM, theme)
     print(response)
     # parse the response
-    prompt = response.split("**Prompt:**")[1].split("**Negative Prompt:**")[0].strip()
-    neg_prompt = response.split("**Negative Prompt:**")[1].strip()
+    try:
+        prompt = response.split("**Prompt:**")[1].split("**Negative Prompt:**")[0].strip()
+        neg_prompt = response.split("**Negative Prompt:**")[1].strip()
+    except:
+        try:
+            prompt = response.split("Prompt:")[1].split("Negative Prompt:")[0].strip()
+            neg_prompt = response.split("Negative Prompt:")[1].strip()
+        except:
+            return None, None    
+
     return prompt, neg_prompt

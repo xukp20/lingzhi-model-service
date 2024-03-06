@@ -33,14 +33,17 @@ with prompt_tab:
     if start_button:
         with st.spinner('Generating...'):
             pos_prompt, neg_prompt = to_prompt(text_input)
-            st.subheader('正向提示词')
-            st.markdown(pos_prompt)
-            st.subheader('反向提示词')
-            st.markdown(neg_prompt)
-            st.session_state.pos_prompt = pos_prompt
-            st.session_state.neg_prompt = neg_prompt
-            # show info
-            st.info('已复制到画图，点击Draw标签继续')
+            if not pos_prompt:
+                st.error('GLM输出格式有误，请重试')
+            else:
+                st.subheader('正向提示词')
+                st.markdown(pos_prompt)
+                st.subheader('反向提示词')
+                st.markdown(neg_prompt)
+                st.session_state.pos_prompt = pos_prompt
+                st.session_state.neg_prompt = neg_prompt
+                # show info
+                st.info('已复制到画图，点击Draw标签继续')
 
 with draw_tab:
     # two text areas for inputing
