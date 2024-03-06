@@ -8,6 +8,8 @@ from llm.adapter import to_prompt
 from text2img.adapter import sd_default, save_encoded_image
 
 DEFAULT_DIR = "./pics"
+if not os.path.exists(DEFAULT_DIR):
+    os.makedirs(DEFAULT_DIR)
 
 # sessions
 # record the pos_prompt and neg_prompt, triggered by the copy button
@@ -37,6 +39,8 @@ with prompt_tab:
             st.markdown(neg_prompt)
             st.session_state.pos_prompt = pos_prompt
             st.session_state.neg_prompt = neg_prompt
+            # show info
+            st.info('已复制到画图，点击Draw标签继续')
 
 with draw_tab:
     # two text areas for inputing

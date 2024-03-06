@@ -7,7 +7,7 @@ if ONLINE:
     api_key = os.environ.get('ZHIPUAI_API')
     client = ZhipuAI(api_key=api_key) # 填写您自己的APIKey
 
-    def chatglm(messages, model="glm-3-turbo", temperature=0.01, top_p=0.7, max_tokens=128):
+    def chatglm(messages, model="glm-3-turbo", temperature=0.01, top_p=0.7, max_tokens=512):
         response = client.chat.completions.create(
             model=model,
             messages=messages, 
@@ -17,7 +17,7 @@ if ONLINE:
         )
         return response.choices[0].message.content
 
-    def chatglm_once(prompt, input_str, model="glm-3-turbo", temperature=0.01, top_p=0.7, max_tokens=128):
+    def chatglm_once(prompt, input_str, model="glm-3-turbo", temperature=0.01, top_p=0.7, max_tokens=512):
         messages = [
             {
                 "role": "system",
