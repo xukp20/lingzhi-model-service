@@ -4,7 +4,7 @@ import time
 # add the project base dir to the path
 import sys
 sys.path.append(os.environ.get('PROJECT_BASE_DIR'))
-from llm.adapter import to_prompt
+from llm.adapter import to_prompt, SYSTEM
 from text2img.adapter import sd_default, save_encoded_image
 
 DEFAULT_DIR = "./pics"
@@ -17,6 +17,9 @@ if 'pos_prompt' not in st.session_state:
     st.session_state.pos_prompt = ""
 if 'neg_prompt' not in st.session_state:
     st.session_state.neg_prompt = ""
+# record the system prompt
+if 'system_prompt' not in st.session_state:
+    st.session_state.system_prompt = SYSTEM
 
 # three tabs
 st.title('Lingzhi Model Service')
@@ -24,6 +27,14 @@ prompt_tab, draw_tab, modeling_tab = st.tabs(['Prompt', 'Draw', 'Modeling'])
 
 with prompt_tab:
     st.write('需求转提示词')
+    # add a expander for modifing the system prompt
+    with st.expander('系统提示词'):
+        # text area for inputing
+        st.text_area('系统提示词', st.session_state.system_prompt, height=400)
+        # echo the system prompt as markdown
+        st.markdown(st.session_state.system_prompt)
+
+
     input_col, button_col = st.columns([4, 1])
     with input_col:
         text_input = st.text_input('需求', '画一只猫', label_visibility="collapsed")
@@ -32,7 +43,7 @@ with prompt_tab:
             start_button = st.button('开始转换')
     if start_button:
         with st.spinner('Generating...'):
-            pos_prompt, neg_prompt = to_prompt(text_input)
+            pos_prompt, neg_prompt = to_prompt(text_input, prompt=st.session_state.system_prompt)
             if not pos_prompt:
                 st.error('GLM输出格式有误，请重试')
             else:
