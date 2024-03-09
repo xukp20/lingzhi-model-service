@@ -58,8 +58,8 @@ Stable Diffusion是一款利用深度学习的文生图模型，支持通过使�
 """
 
 from llm.chatglm import chatglm_once
-def to_prompt(theme):
-    response = chatglm_once(SYSTEM, theme)
+def to_prompt(theme, prompt=SYSTEM):
+    response = chatglm_once(prompt, theme)
     print(response)
     # parse the response
     try:
