@@ -63,12 +63,12 @@ def to_prompt(theme, prompt=SYSTEM):
     print(response)
     # parse the response
     try:
-        prompt = response.split("**Prompt:**")[1].split("**Negative Prompt:**")[0].strip()
-        neg_prompt = response.split("**Negative Prompt:**")[1].strip()
+        prompt = response.split("**Prompt:**")[1].split("**Negative Prompt:**")[0].strip('"').strip("'").strip()
+        neg_prompt = response.split("**Negative Prompt:**")[1].strip('"').strip("'").strip()
     except:
         try:
-            prompt = response.split("Prompt:")[1].split("Negative Prompt:")[0].strip()
-            neg_prompt = response.split("Negative Prompt:")[1].strip()
+            prompt = response.split("Prompt:")[1].split("Negative Prompt:")[0].strip('"').strip("'").strip()
+            neg_prompt = response.split("Negative Prompt:")[1].strip('"').strip("'").strip()
         except:
             return None, None    
 
