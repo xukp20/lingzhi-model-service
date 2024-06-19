@@ -29,7 +29,7 @@ def sd_default(pos_prompt, neg_prompt, save_path, use_model=None):
     }
 
     if use_model:
-        model_title = get_model_names()[use_model]
+        model_title = get_models()[use_model]
         data["override_settings"] = data.get("override_settings", {})
         data["override_settings"].update({"sd_model_checkpoint": model_title})
 
@@ -47,7 +47,7 @@ DEFAULT_SD_REPO_DIR=os.path.join(os.path.dirname(os.environ.get('PROJECT_BASE_DI
 DEFAULT_MODEL_DIR=os.path.join(DEFAULT_SD_REPO_DIR, "models/Stable-diffusion")
 API_ENTRY="sdapi/v1/sd-models"
 
-def get_model_names():
+def get_models():
     # get from the api
     url = f'{DEFAULT_API}/{API_ENTRY}'
     response = requests.get(url)
@@ -55,4 +55,25 @@ def get_model_names():
     models = {
         model["model_name"]: model["title"] for model in response.json()
     }
+
+    # if dreamshaper is in this dict, put it as the first
     return models
+
+
+VALID_MODELS=[
+    "dreamshaper",
+    "productDesign_eddiemauro15b"
+]
+
+def get_model_names():
+    models = get_models()
+    # put the dreamshaper as the first
+    model_names = list(models.keys())
+    if "dreamshaper" in model_names:
+        model_names.remove("dreamshaper")
+        model_names = ["dreamshaper"] + model_names
+
+    # add filter 
+    # model_names = [model for model in model_names if model in VALID_MODELS]
+    
+    return model_names
